@@ -63,7 +63,7 @@
             key_name: teliosgrp-eu-west-1
             region: eu-west-1
             instance_type: t2.micro
-            image: ami-0fab23d0250b9a47e
+            image: ami-02df9ea15c1778c9c
             wait: yes
             group: web
             vpc_subnet_id: '{{ item }}'
