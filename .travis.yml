@@ -18,9 +18,6 @@ deploy:
   script: ansible-playbook -c local zdt.yaml --extra-vars "VPC_NAME=telios"
   on:
     branch: master
-after_deploy:
-  provider: script
-  script: ./terraform state list
 notifications:
   email:
     - muyiwa@tssdevs.com
