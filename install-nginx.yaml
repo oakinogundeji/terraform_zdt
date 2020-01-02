@@ -1,0 +1,51 @@
+---
+    - name: install nginx on an ec2 instance
+      hosts: localhost
+      become: yes
+      become_method: sudo
+      debugger: on_failed
+      gather_facts: yes
+      tasks:
+
+        - name: install nginx            
+          apt:
+            name: nginx
+            update_cache: yes
+            state: present
+          register: nginx_installed
+
+        - debug: var=nginx_installed
+
+        - name: stop nginx service
+          service:
+            name: nginx
+            state: stopped
+          register: nginx_down
+
+        - debug: var=nginx_down
+
+        - name: delete the default html file
+          file:
+            path: /var/www/html/index.nginx-debian.html
+            state: absent
+          register: default_gone
+
+        - debug: var=default_gone
+
+        - name: copy new file from template
+          template:
+            src: ./templates/index.html.j2
+            dest: /var/www/html/index.html
+            owner: root
+            group: root
+          register: new_html
+
+        - debug: var=new_html
+
+        - name: restart nginx service
+          service:
+            name: nginx
+            state: restarted
+          register: nginx_up
+
+        - debug: var=nginx_up

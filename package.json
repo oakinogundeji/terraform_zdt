@@ -1,0 +1,15 @@
+{
+  "name": "vpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.485.0",
+    "bluebird": "^3.5.5"
+  }
+}
