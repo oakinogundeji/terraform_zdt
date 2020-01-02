@@ -36,7 +36,7 @@ variable "ec2_keypair" {
 
 terraform {
     backend "s3" {
-        bucket = "telios-terraform-s3-backend-2"
+        bucket = "tss-terraform-backend"
         key = "zdt-demo"
         encrypt = true
         dynamodb_table = "devops-zdt-demo-lock-table"
