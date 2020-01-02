@@ -190,4 +190,3 @@ resource "aws_elb" "web-lb" {
         Name = "${var.vpc_name}-elb"
     }
 }
-
