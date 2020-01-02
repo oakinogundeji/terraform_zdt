@@ -218,7 +218,7 @@
         - debug: var=new_config_inserted
 
         - name: execute terraform import for new EC2
-          shell: terraform import aws_instance.{{ item.name }} {{ item.id }}
+          shell: ./terraform import aws_instance.{{ item.name }} {{ item.id }}
           with_items:
             - { name: 'web1', id: '{{ new_ec2_1 }}' }
             - { name: 'web2', id: '{{ new_ec2_2 }}' }
