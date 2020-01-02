@@ -1,0 +1,31 @@
+language: node_js
+node_js:
+  - 'lts/*'
+git:
+  depth: 5
+  quiet: true
+before_install:
+  - sudo apt-get install -y python-minimal python-pip python-boto software-properties-common ntp unzip build-essential python3-pip
+  - sudo pip install boto boto3
+  - pip install --user ansible
+  - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.17/terraform_0.12.17_linux_amd64.zip
+  - unzip /tmp/terraform.zip -d /tmp
+  - mkdir ~/bin
+  - mv /tmp/terraform ~/bin
+  - export PATH="~/bin:$PATH"
+addons:
+  apt:
+    update: true
+script: ansible-playbook -c local install-nginx.yaml
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ansible-playbook -c local zdt.yaml --extra-vars "VPC_NAME=telios"
+  on:
+    branch: master
+after_deploy:
+  provider: script
+  script: terraform state list
+notifications:
+  email:
+    - muyiwa@tssdevs.com
