@@ -50,6 +50,14 @@
           set_fact:
             pth: "{{ pwd }}/files/ec2-user-data.sh"
 
+        - name: create path to main.tf
+          set_fact:
+            tf_config: "{{ pwd }}/main.tf"
+
+        - name: create path to new-server-config
+          set_fact:
+            new_server_config: "{{ pwd }}/templates/new-server-config.j2"
+
         - name: standup new set of ec2s
           ec2:
             key_name: teliosgrp-eu-west-2
@@ -198,3 +206,25 @@
         - name: pause for 3 minutes to ensure all set
           pause:
             minutes: 3
+
+        - name: add new EC2s to main.tf
+          blockinfile:
+            path: "{{ tf_config }}"
+            insertafter: EOF
+            state: present
+            block: "{{ lookup('file', '{{ new_server_config }}') }}"
+          register: new_config_inserted
+
+        - debug: var=new_config_inserted
+
+        - name: execute terraform import for new EC2
+          shell: terraform import aws_instance.{{ item.name }} {{ item.id }}
+          with_items:
+            - { name: 'web1', id: '{{ new_ec2_1 }}' }
+            - { name: 'web2', id: '{{ new_ec2_2 }}' }
+            - { name: 'web3', id: '{{ new_ec2_3 }}' }
+          register: new_ec2_imported
+
+        - debug: var=new_ec2_imported
+
+
