@@ -16,7 +16,7 @@
 
         - name: get facts about the ELB
           ec2_elb_facts:
-            names: '{{ VPC_NAME }}'-elb
+            names: '{{ VPC_NAME }}-elb'
             region: eu-west-2
           register: elb_facts
 
@@ -33,11 +33,11 @@
             region: eu-west-2
             filters:
               vpc-id: '{{ vpc_exists.vpcs[0].vpc_id }}'
-              "tag:role": "{{ item }}"
+              "tag:Name": "{{ item }}"
           loop:
-            - '{{ VPC_NAME }}'-public-eu-west-2a
-            - '{{ VPC_NAME }}'-public-eu-west-2b
-            - '{{ VPC_NAME }}'-public-eu-west-2c
+            - '{{ VPC_NAME }}-public-eu-west-2a'
+            - '{{ VPC_NAME }}-public-eu-west-2b'
+            - '{{ VPC_NAME }}-public-eu-west-2c'
           register: subnet_facts
 
         - debug: var=subnet_facts
@@ -88,7 +88,7 @@
           ec2_elb:
             instance_id: "{{ old_ec2_1 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
             wait_timeout: 300
@@ -100,7 +100,7 @@
           ec2_elb:
             instance_id: "{{ new_ec2_1 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
             wait: yes
@@ -125,7 +125,7 @@
           ec2_elb:
             instance_id: "{{ old_ec2_2 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
             wait_timeout: 300
@@ -137,7 +137,7 @@
           ec2_elb:
             instance_id: "{{ new_ec2_2 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
             wait: yes
@@ -162,7 +162,7 @@
           ec2_elb:
             instance_id: "{{ old_ec2_3 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
             wait_timeout: 300
@@ -174,7 +174,7 @@
           ec2_elb:
             instance_id: "{{ new_ec2_3 }}"
             region: eu-west-2
-            ec2_elbs: '{{ VPC_NAME }}'-elb
+            ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
             wait: yes
