@@ -1,5 +1,5 @@
 ---
-    - name: execute zero downtime rolling update for 3 webservers behind a loadbalancer on a target VPC in the eu-west-2 region
+    - name: execute zero downtime rolling update for 3 webservers behind a loadbalancer on a target VPC in the eu-west-1 region
       hosts: localhost
       debugger: on_failed
       gather_facts: yes
@@ -7,7 +7,7 @@
 
         - name: get facts about existing vpc
           ec2_vpc_net_facts:
-            region: eu-west-2
+            region: eu-west-1
             filters:
               "tag:Name": '{{ VPC_NAME }}'
           register: vpc_exists
@@ -17,7 +17,7 @@
         - name: get facts about the ELB
           ec2_elb_facts:
             names: '{{ VPC_NAME }}-elb'
-            region: eu-west-2
+            region: eu-west-1
           register: elb_facts
 
         - debug: var=elb_facts
@@ -30,14 +30,14 @@
 
         - name: get facts about existing public subnets in VPC
           ec2_vpc_subnet_facts:
-            region: eu-west-2
+            region: eu-west-1
             filters:
               vpc-id: '{{ vpc_exists.vpcs[0].vpc_id }}'
               "tag:Name": "{{ item }}"
           loop:
-            - '{{ VPC_NAME }}-public-eu-west-2a'
-            - '{{ VPC_NAME }}-public-eu-west-2b'
-            - '{{ VPC_NAME }}-public-eu-west-2c'
+            - '{{ VPC_NAME }}-public-eu-west-1a'
+            - '{{ VPC_NAME }}-public-eu-west-1b'
+            - '{{ VPC_NAME }}-public-eu-west-1c'
           register: subnet_facts
 
         - debug: var=subnet_facts
@@ -60,8 +60,8 @@
 
         - name: standup new set of ec2s
           ec2:
-            key_name: teliosgrp-eu-west-2
-            region: eu-west-2
+            key_name: teliosgrp-eu-west-1
+            region: eu-west-1
             instance_type: t2.micro
             image: ami-0fab23d0250b9a47e
             wait: yes
@@ -95,7 +95,7 @@
         - name: remove an old ec2 instance from the ELB
           ec2_elb:
             instance_id: "{{ old_ec2_1 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
@@ -107,7 +107,7 @@
         - name: add a new ec2 instance to the ELB
           ec2_elb:
             instance_id: "{{ new_ec2_1 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
@@ -120,7 +120,7 @@
         - name: terminate the old ec2 instance
           ec2:
             state: absent
-            region: eu-west-2
+            region: eu-west-1
             wait: yes
             wait_timeout: 300
             instance_ids:
@@ -132,7 +132,7 @@
         - name: remove an old ec2 instance from the ELB
           ec2_elb:
             instance_id: "{{ old_ec2_2 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
@@ -144,7 +144,7 @@
         - name: add a new ec2 instance to the ELB
           ec2_elb:
             instance_id: "{{ new_ec2_2 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
@@ -157,7 +157,7 @@
         - name: terminate the old ec2 instance
           ec2:
             state: absent
-            region: eu-west-2
+            region: eu-west-1
             wait: yes
             wait_timeout: 300
             instance_ids:
@@ -169,7 +169,7 @@
         - name: remove an old ec2 instance from the ELB
           ec2_elb:
             instance_id: "{{ old_ec2_3 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             state: absent
             wait: yes
@@ -181,7 +181,7 @@
         - name: add a new ec2 instance to the ELB
           ec2_elb:
             instance_id: "{{ new_ec2_3 }}"
-            region: eu-west-2
+            region: eu-west-1
             ec2_elbs: '{{ VPC_NAME }}-elb'
             enable_availability_zone: yes
             state: present
@@ -194,7 +194,7 @@
         - name: terminate the old ec2 instance
           ec2:
             state: absent
-            region: eu-west-2
+            region: eu-west-1
             wait: yes
             wait_timeout: 300
             instance_ids:

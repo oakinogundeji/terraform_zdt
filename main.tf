@@ -1,6 +1,6 @@
 ###
 # This config stands up the following 
-# 1 VPC with a dynamially supplied name in eu-west-2 
+# 1 VPC with a dynamially supplied name in eu-west-1 
 
 ###
 # Declare variables for use in config
@@ -40,7 +40,7 @@ terraform {
         key = "zdt-demo"
         encrypt = true
         dynamodb_table = "devops-zdt-demo-lock-table"
-        region = "eu-west-2"
+        region = "eu-west-1"
     }
 }
 
@@ -50,7 +50,7 @@ terraform {
 
 provider "aws" {
     version = "~> 2.43"
-    region = "eu-west-2"
+    region = "eu-west-1"
 }
 
 ###
