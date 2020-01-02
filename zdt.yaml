@@ -217,6 +217,12 @@
 
         - debug: var=new_config_inserted
 
+        - name: reinitialize terraform backend
+          shell: ./terraform init
+          register: backend_reinitialized
+
+        - debug: var=backend_reinitialized
+
         - name: execute terraform import for new EC2
           shell: ./terraform import aws_instance.{{ item.name }} {{ item.id }}
           with_items:
